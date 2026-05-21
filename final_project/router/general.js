@@ -97,69 +97,53 @@ module.exports.general = public_users;
 
 
 /* =========================================================
-   TASK 11: IMPLEMENTATION USING AXIOS WITH ASYNC/AWAIT
+   TASK 11: IMPLEMENTATION USING AXIOS WITH ASYNC/AWAIT & PROMISES
    ========================================================= */
 const axios = require('axios');
-const localURL = "http://localhost:5000";
 
-// Lấy tất cả sách (Async/Await)
-const getAllBooksAsync = async () => {
+// 1. Get all books (Async/Await)
+const getAllBooks = async () => {
   try {
-    const response = await axios.get(localURL + "/");
-    if (response.status === 200) {
-      console.log("Task 11 - All Books:", response.data);
-    }
+    const response = await axios.get("http://localhost:5000/");
+    console.log("All Books:", response.data);
   } catch (error) {
-    console.error("Task 11 - Error fetching all books:", error.message);
+    console.error("Error fetching all books:", error);
   }
 };
 
-// Lấy sách theo ISBN (Promise Callback)
-const getBookByIsbnPromise = (isbn) => {
-  axios.get(localURL + "/isbn/" + isbn)
+// 2. Get book by ISBN (Promises)
+const getBookByISBN = (isbn) => {
+  axios.get("http://localhost:5000/isbn/" + isbn)
     .then(response => {
-      if (response.status === 200) {
-        console.log(`Task 11 - Book ISBN ${isbn}:`, response.data);
-      }
+      console.log("Book details by ISBN:", response.data);
     })
     .catch(error => {
-      if (error.response && error.response.status === 404) {
-        console.error(`Task 11 - Error: Book with ISBN ${isbn} not found.`);
-      } else {
-        console.error("Task 11 - Error fetching book by ISBN:", error.message);
-      }
+      console.error("Error fetching book by ISBN:", error);
     });
 };
 
-// Lấy sách theo Tác giả (Async/Await)
-const getBookByAuthorAsync = async (author) => {
+// 3. Get book by Author (Async/Await)
+const getBookByAuthor = async (author) => {
   try {
-    const response = await axios.get(localURL + "/author/" + author);
-    if (response.status === 200) {
-      console.log(`Task 11 - Books by ${author}:`, response.data);
-    }
+    const response = await axios.get("http://localhost:5000/author/" + author);
+    console.log("Book details by Author:", response.data);
   } catch (error) {
-    if (error.response && error.response.status === 404) {
-      console.error(`Task 11 - Error: Author '${author}' not found.`);
-    } else {
-      console.error("Task 11 - Error fetching books by author:", error.message);
-    }
+    console.error("Error fetching book by Author:", error);
   }
 };
 
-// Lấy sách theo Tiêu đề (Promise Callback)
-const getBookByTitlePromise = (title) => {
-  axios.get(localURL + "/title/" + title)
+// 4. Get book by Title (Promises)
+const getBookByTitle = (title) => {
+  axios.get("http://localhost:5000/title/" + title)
     .then(response => {
-      if (response.status === 200) {
-        console.log(`Task 11 - Books titled ${title}:`, response.data);
-      }
+      console.log("Book details by Title:", response.data);
     })
     .catch(error => {
-      if (error.response && error.response.status === 404) {
-        console.error(`Task 11 - Error: Title '${title}' not found.`);
-      } else {
-        console.error("Task 11 - Error fetching books by title:", error.message);
-      }
+      console.error("Error fetching book by Title:", error);
     });
 };
+
+getAllBooks();
+getBookByISBN("1");
+getBookByAuthor("Chinua Achebe");
+getBookByTitle("Things Fall Apart");
